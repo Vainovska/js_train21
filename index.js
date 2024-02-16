@@ -29,37 +29,48 @@
 
 class Musician {
   // статичне поле count, яке відслідковує кількість музикантів, початкове значення 0
+  static count = 0;
   // Об'являємо приватні поля #name; #instrument;
+  #name = null;
+  #instrument = null;
 
   constructor(name, instrument) {
     // Конструктор приймає два параметри: name та instrument
+    this.#name = name;
+    this.#instrument = instrument;
     // присвоєння вхідного значення name до приватного поля #name
     // присвоєння вхідного значення instrument до приватного поля #instrument
+    let count = +1;
     // збільшення значення статичного поля на 1
   }
 
   get name() {
     // гетер для приватного поля #name
+    return `${this.#name}`;
     // повертає значення приватного поля #name
   }
 
   get instrument() {
     // гетер для приватного поля #instrument
+    return `${this.#instrument}`;
     // повертає значення приватного поля #instrument
   }
 
   set name(newName) {
     // сетер для приватного поля #name
+    this.#name = newName;
     // присвоює нове значення приватному полю #name
   }
 
   set instrument(newInstrument) {
     // сетер для приватного поля #instrument
+    this.#instrument = newInstrument;
     // присвоює нове значення приватному полю #instrument
   }
 
   play() {
     // метод, що виводить рядок в консоль <#name> грає на <#instrument>
+    console.log(`${this.#name} грає на ${this.#instrument}`);
   }
 }
 
@@ -99,15 +110,34 @@ class Musician {
 
 class Guitarist extends Musician {
   // Об'являємо приватні поля #band;
+  #band = null;
   // Конструктор приймає три параметри: name, instrument та band
+  constructor(name, instrument, band) {
+    super(name, instrument);
+    this.#band = band;
+  }
+  get band() {
+    return `${this.#band}`;
+  }
   // виклик конструктора батьківського класу super з двома параметрами name, instrument
   // присвоєння вхідного значення band до приватного поля #band
   // гетер для приватного поля #band
   // повертає значення приватного поля #band
   // сетер для приватного поля #band
   // присвоює нове значення приватному полю #band
+  set band(newBand) {
+    this.#band = newBand;
+  }
   // метод joinBand, що змінює значення #band, this.#band = band
+  joinBand() {
+    this.#band = band;
+  }
   // перевизначений метод play(), що виводить рядок в консоль ${super.name} грає на ${super.instrument} в групі ${this.#band}
+  play() {
+    console.log(
+      `${super.name} грає на ${super.instrument} в групі ${this.#band}`
+    );
+  }
 }
 
 /*
@@ -146,6 +176,14 @@ class Guitarist extends Musician {
 
 class Bassist extends Musician {
   // Об'являємо приватні поля  #band;
+  #band = null;
+  constructor(name, instrument, band) {
+    super(name, instrument);
+    this.#band = band;
+  }
+  get band() {
+    return `${this.#band}`;
+  }
   // Конструктор приймає три параметри: name, instrument та band
   // виклик конструктора батьківського класу super з двома параметрами name, instrument
   // присвоєння вхідного значення band до приватного поля #band
@@ -155,8 +193,19 @@ class Bassist extends Musician {
   // присвоює нове значення приватному полю #band
   // метод joinBand, що змінює значення #band,this.#band = band
   // перевизначений метод play(), що виводить рядок в консоль ${super.name} грає на ${super.instrument} в групі ${this.#band}
+  set band(newBand) {
+    this.#band = newBand;
+  }
+  joinBand() {
+    this.#band = band;
+  }
+  play() {
+    console.log(
+      `${super.name} грає на ${super.instrument} в групі ${this.#band}`
+    );
+  }
 }
-
+// Object.defineProperty(Musician.prototype, band, newBand);
 // Тут ми використовуємо Object.defineProperty(), щоб додати сетер band до класу Musician після його створення.
 // Перший аргумент - це об'єкт, до якого ми хочемо додати властивість. У цьому випадку це Musician.prototype,
 // тому що ми хочемо додати сетер до всіх екземплярів класу Musician.
@@ -175,13 +224,36 @@ class Bassist extends Musician {
 
 class Band {
   // Об'являємо приватні поля #name; #members;
+  #name = null;
+  #members = [];
   /*
    * Створюємо конструктор з двома вхідними параметрами: #name і #members
    * #members - це масив об'єктів, що є екземплярами класу Musician або його нащадків
    */
+  constructor(name, members) {
+    this.#name = name;
+    this.#members = members;
+  }
+
   // Створюємо getter для #name, що повертає приватну властивість #name
+  get name() {
+    return `${this.#name}`;
+  }
+  get members() {
+    return `${this.#members}`;
+  }
   // Створюємо getter для #members, що повертає приватну властивість #members
   // Створюємо сетер для #name
+  addMember() {
+    if (Musician.prototype.isPrototype(newMember)) {
+      Musician.set();
+    } else {
+      console.log("Новий учасник повинен бути екземпляром класу Musician");
+    }
+  }
+  playMusic() {
+    this.#members.forEach((elem) => elem.play());
+  }
   // Створюємо метод addMember(), що додає нового учасника до гурту
   // Перевіряємо чи Musician є прототипом newMember
   // Ось тут ми використовуємо сетер band класу Musician
@@ -201,11 +273,35 @@ class Band {
  */
 class Performance {
   // Об'являємо приватні поля #band; #location; #date;
+  #band = Band;
+  #location = null;
+  #date = null;
   // Створюємо конструктор з трьома вхідними параметрами: #band, #location та #date
+  constructor(band, location, date) {
+    this.#band = band;
+    this.#location = location;
+    this.#date = date;
+  }
   // Створюємо getter для #band, що повертає приватну властивість #band
+  get band() {
+    return `${this.#band}`;
+  }
+  get location() {
+    return `${this.#location}`;
+  }
+  get date() {
+    return `${this.#date}`;
+  }
   // Створюємо getter для #location, що повертає приватну властивість #location
   // Створюємо getter для #date, що повертає приватну властивість #date
   // Визначаємо метод info(), що виводить рядок в консоль `Гурт ${this.#band.name} виступить в ${this.#location} ${this.#date.toLocaleDateString()}`
+  info() {
+    console.log(
+      `Гурт ${this.#band.name} виступить в ${
+        this.#location
+      } ${this.#date.toLocaleDateString()}`
+    );
+  }
 }
 
 /*
@@ -220,11 +316,29 @@ class Performance {
  */
 class Concert extends Performance {
   // Об'являємо приватні поля #ticketPrice;
+  #tickedPrice = null;
   // Створюємо конструктор з чотирма вхідними параметрами: #band, #location, #date та #ticketPrice
+  constructor(band, location, date, ticketPrice) {
+    super(band, location, date);
+    this.#tickedPrice = ticketPrice;
+  }
   // використання super для виклику конструктора базового класу
+  get ticketPrice() {
+    return `${this.#tickedPrice}`;
+  }
+  set ticketPrice(newTickedPrice) {
+    this.#tickedPrice = newTickedPrice;
+  }
   // Створюємо getter для #ticketPrice, що повертає приватну властивість #ticketPrice
   // Створюємо setter для #ticketPrice, що дозволяє змінити приватну властивість #ticketPrice
   // Визначаємо метод info(), що виводить рядок в консоль `Гурт ${super.band.name} виступить в ${super.location} ${super.date.toLocaleDateString()}, ціна квитка ${this.#ticketPrice}`
+  info() {
+    console.log(
+      `Гурт ${super.band.name} виступить в ${
+        super.location
+      } ${super.date.toString()}, ціна квитка ${this.ticketPrice}`
+    );
+  }
 }
 
 /*
@@ -237,13 +351,34 @@ class Concert extends Performance {
  */
 class Vocalist {
   // Об'являємо приватні поля #name; #band;
+  #name = null;
+  #band = null;
   // Створюємо конструктор з двома вхідними параметрами: #name та #band
+  constructor(name, band) {
+    this.#name = name;
+    this.#band = band;
+  }
+  get name() {
+    return `${this.#name}`;
+  }
+  get band() {
+    return `${this.#band}`;
+  }
   // Створюємо getter для #name, що повертає приватну властивість #name
   // Створюємо getter для #band, що повертає приватну властивість #band
+  set name(newName) {
+    this.#name = newName;
+  }
+  set band(newBand) {
+    this.#band = newBand;
+  }
   // Створюємо setter для #name, що дозволяє змінити приватну властивість #name
   // Створюємо setter для #band, що дозволяє змінити приватну властивість #band
   // Визначаємо метод info(), який виводить інформацію про вокаліста
   // Виводимо інформацію у форматі: "Вокаліст ${this.name} є членом гурту ${this.band}"
+  info() {
+    console.log(`Вокаліст ${this.name} є членом гурту ${this.band}`);
+  }
 }
 
 /*
@@ -255,9 +390,22 @@ class Vocalist {
  */
 class SongWriter {
   // Об'являємо приватні поля #songs;
+  #song = null;
   // Створюємо конструктор з одним вхідним параметром: #songs
+  constructor(song) {
+    this.#song = song;
+  }
+  get song() {
+    return `${this.#song}`;
+  }
   // Створюємо getter для #songs, що повертає приватну властивість #songs
+  addSong(newSong) {
+    this.#song.push(newSong);
+  }
   // Створюємо метод addSong для додавання нової пісні до масиву #songs
+  info() {
+    console.log(`Написав ${this.song.length} пісень`);
+  }
   // Визначаємо метод info(), який виводить інформацію про автора пісень
   // Виводимо інформацію у форматі: "Написав ${this.songs.length} пісень"
 }
@@ -274,6 +422,9 @@ class SongWriter {
 
 class LeadSinger extends Vocalist {
   // Створюємо конструктор з двома вхідними параметрами: name, band
+  constructor(name, band) {
+    super(name, band);
+  }
   // super(name, band);
 }
 
@@ -285,7 +436,7 @@ class LeadSinger extends Vocalist {
  * | name        | "John"           |
  * | instrument  | "Guitarist"      |
  */
-
+let musician = new Musician("John", "Guitarist");
 /*
  * Створення guitarist екземпляра класу Guitarist
  * ---------------------------------------------------
@@ -295,7 +446,7 @@ class LeadSinger extends Vocalist {
  * | instrument  | "гітара"          |
  * | band        | "Led Zeppelin"    |
  */
-
+let guitarist = new Guitarist("Jimmy Page", "гітара", "Led Zeppelin");
 /*
  * Створення bassist екземпляра класу Bassist
  * ---------------------------------------------------
@@ -305,7 +456,7 @@ class LeadSinger extends Vocalist {
  * | instrument  | "бас-гітара"     |
  * | band        | "The Beatles"    |
  */
-
+let bassist = new Bassist("Paul McCartney", "бас-гітара", "The Beatles");
 // Створення band екземпляру класу Band
 /*
  * Створення band екземпляра класу Band
@@ -315,8 +466,9 @@ class LeadSinger extends Vocalist {
  * | name        | "The Beatles"    |
  * | members     | [bassist]       |
  */
-
+let band = new Band("The Beatles", [bassist]);
 // Додаємо guitarist до band за допомогою addMember
+// band.addMember(this.members.push(guitarist));
 
 /*
  * Створення vocalist екземпляра класу Vocalist
@@ -326,7 +478,7 @@ class LeadSinger extends Vocalist {
  * | name        | "Freddie Mercury" |
  * | band        | "Queen"           |
  */
-
+let vocalist = new Vocalist("Freddie Mercury", "Queen");
 /*
  * Створення songwriter екземпляра класу SongWriter
  * -------------------------------------
@@ -334,7 +486,7 @@ class LeadSinger extends Vocalist {
  * |-------------|------------------|
  * | songs       | ["Yesterday","Hey Jude","Let It Be",]|
  */
-
+let songwriter = new SongWriter(["Yesterday", "Hey Jude", "Let It Be"]);
 // Створення performance екземпляра класу Performance
 /*
  * ------------------------------------------------------
@@ -344,9 +496,9 @@ class LeadSinger extends Vocalist {
  * | location    | "Liverpool"                          |
  * | date        | new Date('2023-08-01')               |
  */
-
+let performance = new Performance(band, "Liverpool", new Date("2023-08-01"));
 // використання Object.assign() для успадкування властивостей songwriter для LeadSinger.prototype
-
+Object.assign(LeadSinger.prototype, songwriter);
 /*
  * Створення concert екземпляра класу Concert
  * ---------------------------------------------------
@@ -357,7 +509,7 @@ class LeadSinger extends Vocalist {
  * | date        | new Date("1994-07-06") |
  * | ticketPrice | 100              |
  */
-
+let concert = new Concert(band, "BBC studios", new Date("1994-07-06"), 100);
 /*
  * Створення leadsinger екземпляра класу LeadSinger
  * -------------------------------------
@@ -367,14 +519,18 @@ class LeadSinger extends Vocalist {
  * | band        | "The Rolling Stones" |
  * | songs       | ["Yesterday","Hey Jude","Let It Be",]|
  */
-
+let leadsinger = new LeadSinger("Mick Jagger", "The Rolling Stones", [
+  "Yesterday",
+  "Hey Jude",
+  "Let It Be",
+]);
 // Методи для тестування розкоментувати після виконня всіх завдань
-// musician.play();
-// guitarist.play();
-// bassist.play();
-// band.playMusic();
-// performance.info();
-// concert.info();
-// vocalist.info();
-// songwriter.info();
-// leadsinger.info();
+musician.play();
+guitarist.play();
+bassist.play();
+band.playMusic();
+performance.info();
+concert.info();
+vocalist.info();
+songwriter.info();
+leadsinger.info();
